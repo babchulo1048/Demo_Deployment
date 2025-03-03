@@ -13,25 +13,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js environment (if needed)
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "20" # Set your Node.js version here
 
-      # Step 3: Install dependencies and build the app (if you're using Vite)
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Step 4: Build the project
       - name: Build the project
         run: npm run build
 
-      # Step 4: Deploy to Netlify
+      # Step 5: Install Netlify CLI via npm (Recommended method)
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      # Step 6: Deploy to Netlify
       - name: Deploy to Netlify
         run: |
-          curl -sL https://github.com/netlify/cli/releases/download/v3.4.1/netlify-cli-linux-x64.tar.gz | tar xz
-          sudo mv netlify /usr/local/bin/
-          netlify login --auth ${{ secrets.NETLIFY_AUTH_TOKEN }}  # Use the token from GitHub secrets
+          netlify login --auth ${{ secrets.NETLIFY_AUTH_TOKEN }}  # Use the secret token
           netlify deploy --prod --dir=dist  # Adjust 'dist' if your build output directory is different
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }} # Use the secret token
