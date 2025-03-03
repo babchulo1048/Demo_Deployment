@@ -27,14 +27,13 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      # Step 5: Install Netlify CLI via npm (Recommended method)
+      # Step 5: Install Netlify CLI
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
       # Step 6: Deploy to Netlify
       - name: Deploy to Netlify
         run: |
-          netlify login --auth ${{ secrets.NETLIFY_AUTH_TOKEN }}  # Use the secret token
-          netlify deploy --prod --dir=dist  # Adjust 'dist' if your build output directory is different
+          netlify deploy --prod --dir=dist --site ${{ secrets.NETLIFY_SITE_ID }}
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }} # Use the secret token
